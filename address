@@ -1,6 +1,7 @@
  0x8dc3Fae25a89AD3af0b8F5c99069d8263c64f449
 
  SSV_Contract address: 0xfbD6099696F6f2E76F8CA2014143a8Cf9c224D8E
+ latest 0x992Ac7062c0db547D0F76fdfaEA8fe5a356D5a4a
  <ContributeForm address={this.props.address}/>
 
 

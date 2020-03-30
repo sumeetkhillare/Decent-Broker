@@ -1,23 +1,23 @@
 import React,{Component} from 'react';
 import {Table,Button} from 'semantic-ui-react';
 import web3 from '../ethereum/web3'
-import Campaign from '../ethereum/contract';
+import MyContract from '../ethereum/contract';
 import Router from '../routes';
 class RequestRow extends Component{
 
     onFinalize=async()=>{
-      const campaign = Campaign(this.props.address);
+      const contract = MyContract(this.props.address);
       const accounts = await web3.eth.getAccounts();
-      await campaign.methods.finalizeRequest(this.props.id).send(
+      await contract.methods.finalizeRequest(this.props.id).send(
         {from : accounts[0]}
       );
       Router.pushRoute(`/contracts/${this.props.address}/requests`);
 
     };
     onApprove=async()=>{
-        const campaign = Campaign(this.props.address);
+        const contract = MyContract(this.props.address);
         const accounts = await web3.eth.getAccounts();
-        await campaign.methods.approveRequest(this.props.id).send(
+        await contract.methods.approveRequest(this.props.id).send(
           {from : accounts[0]}
         );
         Router.pushRoute(`/contracts/${this.props.address}/requests`);

@@ -3,6 +3,6 @@ import ContractDeployer from './build/ContractDeployer.json';
 
 const instance = new web3.eth.Contract(
   JSON.parse(ContractDeployer.interface),
-  '0xfbD6099696F6f2E76F8CA2014143a8Cf9c224D8E'
+  '0x992Ac7062c0db547D0F76fdfaEA8fe5a356D5a4a'
 );
 export default instance;

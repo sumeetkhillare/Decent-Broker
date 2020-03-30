@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {Form ,Input,Message,Button} from 'semantic-ui-react';
-import Campaign from '../ethereum/contract';
+import MyContract from '../ethereum/contract';
 import web3 from '../ethereum/web3';
 import {Router} from '../routes';
 
@@ -16,10 +16,10 @@ class ContributeForm extends Component{
 
   onSubmit = async event=>{
     event.preventDefault();
-    const campaign = Campaign(this.props.address);
-    //console.log(campaign);
-    const manager_address=await campaign.methods.getManagerAddress().call();
-    const receiver_address=await campaign.methods.getReceiverAddress().call();
+    const contract = MyContract(this.props.address);
+    //console.log(contract);
+    const manager_address=await contract.methods.getManagerAddress().call();
+    const receiver_address=await contract.methods.getReceiverAddress().call();
     this.setState({manager:manager_address});
     this.setState({reciever:receiver_address});
     this.setState({loading:true});
@@ -31,12 +31,12 @@ class ContributeForm extends Component{
       console.log(n);
       this.setState({date:n});
       if(accounts[0]==receiver_address)
-      {await campaign.methods.setMsgfromReceiver(n).send({
+      {await contract.methods.setMsgfromReceiver(n).send({
         from: accounts[0],
       });
       console.log("receiver "+this.state.reciever);
     }else if(accounts[0]==manager_address){
-      await campaign.methods.setMsgfromManager(n).send({
+      await contract.methods.setMsgfromManager(n).send({
         from: accounts[0],
       });
       console.log("manager "+this.state.manager);
@@ -45,7 +45,7 @@ class ContributeForm extends Component{
       Router.replaceRoute(`/contracts/${this.props.address}`);
     }catch(err){
       this.setState({errorMsg:err.message});
-      console.log(Campaign);
+      console.log(MyContract);
     }
     this.setState({loading:false,value:''});
   };

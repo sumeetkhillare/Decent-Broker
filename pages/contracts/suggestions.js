@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {Link} from '../../routes';
 import Layout from '../../components/Layout';
 import {Card,Grid,Button,Form,Input,Message} from 'semantic-ui-react';
-import Campaign from '../../ethereum/contract';
+import Contract from '../../ethereum/contract';
 import web3 from '../../ethereum/web3';
 import ContributeForm from '../../components/ContributeForm';
 
@@ -10,17 +10,17 @@ class Suggestions extends Component{
 
   static async getInitialProps(props){
 
-    const campaign=Campaign(props.query.address);
-    const campaigns2=await campaign.methods.getmsgFromManager().call();
-    const campaigns1=await campaign.methods.getmsgFromReceiver().call();
+    const contract=Contract(props.query.address);
+    const contracts2=await contract.methods.getmsgFromManager().call();
+    const contracts1=await contract.methods.getmsgFromReceiver().call();
     return{
-      campaigns1:campaigns1,
-      campaigns2:campaigns2,
+      contracts1:contracts1,
+      contracts2:contracts2,
       address:props.query.address,
     };
   }
   renderContractsReceiverMsg(){
-    const items = this.props.campaigns1.map(address =>{
+    const items = this.props.contracts1.map(address =>{
       return {
         header: address,
         description:"",
@@ -31,7 +31,7 @@ class Suggestions extends Component{
   }
 
   renderContractsManagerMsg(){
-    const items = this.props.campaigns2.map(address =>{
+    const items = this.props.contracts2.map(address =>{
       return {
         header: address,
         description:"",

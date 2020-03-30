@@ -3,15 +3,15 @@ import {Card,Button} from 'semantic-ui-react';
 import factory from '../ethereum/factory';
 import Layout from '../components/Layout'
 import {Link} from '../routes';
-class CampaignIndex extends Component{
+class ContractIndex extends Component{
   static async getInitialProps(){
-    const campaigns=await factory.methods.getDeployedContracts().call();
-    console.log(campaigns);
-    return {campaigns};
+    const contracts=await factory.methods.getDeployedContracts().call();
+    console.log(contracts);
+    return {contracts};
   }
 
-  renderCampaigns(){
-    const items = this.props.campaigns.map(address =>{
+  renderContracts(){
+    const items = this.props.contracts.map(address =>{
       return {
         header: address,
         description:(
@@ -39,10 +39,10 @@ class CampaignIndex extends Component{
     />
     </a>
     </Link>
-    {this.renderCampaigns()}
+    {this.renderContracts()}
     </div>
     </Layout>
   );
   }
 }
-export default CampaignIndex;
+export default ContractIndex;

@@ -2,26 +2,26 @@ import React,{Component} from 'react';
 import {Link} from '../../routes';
 import Layout from '../../components/Layout';
 import {Card,Grid,Button,Form,Input,Message} from 'semantic-ui-react';
-import Campaign from '../../ethereum/contract';
+import Contract from '../../ethereum/contract';
 import {Router} from '../../routes';
 
 import web3 from '../../ethereum/web3';
 import ContributeForm from '../../components/ContributeForm';
-class CampaignShow extends Component{
+class ContractShow extends Component{
   state={
     loading1:false,
     loading2:false,
     btnViewMsg:false
   };
   static async getInitialProps(props){
-   //    console.log(campaigns1);
+   //    console.log(contracts1);
 
-    const campaign=Campaign(props.query.address);
+    const contract=Contract(props.query.address);
 //
   //  console.log("receiver_address "+receiver_address);
 
-    const summary=await campaign.methods.getSummary().call();
-    const array=await campaign.methods.getmsgFromReceiver().call();
+    const summary=await contract.methods.getSummary().call();
+    const array=await contract.methods.getmsgFromReceiver().call();
     console.log(array);
     console.log(summary[0]+" "+summary[1]+" "+summary[2]);
     return {
@@ -38,19 +38,19 @@ class CampaignShow extends Component{
 
     onClick=async event=> {
       event.preventDefault();
-      const campaign = Campaign(this.props.address);
-      console.log(campaign);
+      const contract = Contract(this.props.address);
+      console.log(contract);
       this.setState({loading2:true});
       try {
 
         const accounts = await web3.eth.getAccounts();
-        await campaign.methods.acceptRequest().send({
+        await contract.methods.acceptRequest().send({
           from:accounts[0]
         });
         this.setState({loading:false});
               Router.pushRoute(`/`);
       }catch(err) {
-        //console.log(Campaign);
+        //console.log(Contract);
       }
       this.setState({loading2:false,value:''});
     };
@@ -118,4 +118,4 @@ class CampaignShow extends Component{
   }
 }
 
-export default CampaignShow;
+export default ContractShow;

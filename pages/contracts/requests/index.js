@@ -2,19 +2,19 @@ import React,{Component} from 'react';
 import Layout from '../../../components/Layout'
 import {Button,Table} from 'semantic-ui-react';
 import {Link } from '../../../routes';
-import Campaign from '../../../ethereum/contract';
+import MyContract from '../../../ethereum/contract';
 import RequestRow from '../../../components/RequestRow';
 
 class RequestIndex extends Component{
   static async getInitialProps(props){
     const {address} = props.query;
-    const campaign = Campaign(address);
-    const reqCount=await campaign.methods.getRequestCount().call();
-    const approversCount=await campaign.methods.approversCount().call();
+    const contract = MyContract(address);
+    const reqCount=await contract.methods.getRequestCount().call();
+    const approversCount=await contract.methods.approversCount().call();
 
     const request = await Promise.all(
       Array(parseInt(reqCount)).fill().map((element,index)=>{
-        return campaign.methods.requests(index).call();
+        return contract.methods.requests(index).call();
       })
     );
     console.log(request);
