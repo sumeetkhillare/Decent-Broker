@@ -31,7 +31,7 @@ class RequestNew extends Component{
         }
 
       );
-      Router.pushRoute(`/campaigns/${this.props.address}/requests`);
+      Router.pushRoute(`/contracts/${this.props.address}/requests`);
     }catch(err){
         this.setState({errorMsg:err.message});
     }
@@ -40,7 +40,7 @@ class RequestNew extends Component{
   render(){
     return (
       <Layout>
-      <Link route={`/campaigns/${this.props.address}/requests`}>
+      <Link route={`/contracts/${this.props.address}/requests`}>
       <a>
       <Button primary>Back</Button>
       </a>

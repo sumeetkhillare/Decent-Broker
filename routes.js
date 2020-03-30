@@ -1,9 +1,9 @@
 const routes = require('next-routes')();
 routes
-.add('/campaigns/new','/campaigns/new')
-.add('/campaigns/:address/requests','/campaigns/requests/index')
-.add('/campaigns/:address','/campaigns/show')
-.add('/campaigns/:address/requests/new','/campaigns/requests/new')
-.add('/campaigns/:address/suggestions','/campaigns/suggestions');
+.add('/contracts/new','/contracts/new')
+.add('/contracts/:address/requests','/contracts/requests/index')
+.add('/contracts/:address','/contracts/show')
+.add('/contracts/:address/requests/new','/contracts/requests/new')
+.add('/contracts/:address/suggestions','/contracts/suggestions');
 
 module.exports=routes;

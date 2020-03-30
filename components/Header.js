@@ -15,7 +15,7 @@ export default()=>{
     Contracts
     </a>
     </Link>
-    <Link route="/campaigns/new">
+    <Link route="/contracts/new">
     <a className="item">
     +
     </a>

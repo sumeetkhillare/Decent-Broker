@@ -42,7 +42,7 @@ class ContributeForm extends Component{
       console.log("manager "+this.state.manager);
     }
 
-      Router.replaceRoute(`/campaigns/${this.props.address}`);
+      Router.replaceRoute(`/contracts/${this.props.address}`);
     }catch(err){
       this.setState({errorMsg:err.message});
       console.log(Campaign);

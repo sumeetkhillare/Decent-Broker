@@ -11,7 +11,7 @@ class RequestRow extends Component{
       await campaign.methods.finalizeRequest(this.props.id).send(
         {from : accounts[0]}
       );
-      Router.pushRoute(`/campaigns/${this.props.address}/requests`);
+      Router.pushRoute(`/contracts/${this.props.address}/requests`);
 
     };
     onApprove=async()=>{
@@ -20,7 +20,7 @@ class RequestRow extends Component{
         await campaign.methods.approveRequest(this.props.id).send(
           {from : accounts[0]}
         );
-        Router.pushRoute(`/campaigns/${this.props.address}/requests`);
+        Router.pushRoute(`/contracts/${this.props.address}/requests`);
 
         };
   render(){

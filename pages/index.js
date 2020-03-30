@@ -15,7 +15,7 @@ class CampaignIndex extends Component{
       return {
         header: address,
         description:(
-          <Link route={`/campaigns/${address}`}>
+          <Link route={`/contracts/${address}`}>
           <a>View Contract
           </a>
           </Link>
@@ -30,7 +30,7 @@ class CampaignIndex extends Component{
       <Layout>
       <div>
     <h3>Current Contracts</h3>
-    <Link route="/campaigns/new">
+    <Link route="/contracts/new">
     <a>
     <Button floated="right"
     content="Create Contract"
