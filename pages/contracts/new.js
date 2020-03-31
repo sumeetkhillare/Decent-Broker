@@ -4,8 +4,8 @@ import {Form,Button,Input,Message} from 'semantic-ui-react';
 import factory from '../../ethereum/factory';
 import web3 from '../../ethereum/web3';
 import {Router} from '../../routes';
-import ipfs from '../../ethereum/ipfs';
-import storehash from '../../ethereum/storehash';
+import ipfs from '../../ipfs/ipfs';
+import storehash from '../../ipfs/storehash';
 
 
 

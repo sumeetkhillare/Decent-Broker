@@ -1,4 +1,4 @@
-import web3 from './web3';
+import web3 from '../ethereum/web3';
 //access our local copy to contract deployed on rinkeby testnet
 //use your own contract address
 const address = '0x8cF0ad309340FE713c70b0E8DD65C0FCc793C4ee';

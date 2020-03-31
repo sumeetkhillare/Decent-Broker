@@ -11,26 +11,25 @@ class ContractShow extends Component{
   state={
     loading1:false,
     loading2:false,
-    btnViewMsg:false
+    btnViewMsg:false,
+    filehash:''
   };
   static async getInitialProps(props){
-   //    console.log(contracts1);
+ 
 
     const contract=Contract(props.query.address);
-//
-  //  console.log("receiver_address "+receiver_address);
 
     const summary=await contract.methods.getSummary().call();
-    const x= await contract.methods.filehash().call();
+    const hash= await contract.methods.filehash().call();
     const array=await contract.methods.getmsgFromReceiver().call();
-    console.log(array);
-    console.log(summary[0]+" "+summary[1]+" "+summary[2]+" hashhhhhhhhhhhhhhhhhhhh"+x);
+    // console.log(array);
     return {
         address:props.query.address,
         receiver_address: summary[0],
         contract_info:  summary[1],
-        manager_address: summary[2]+"    "+"https://ipfs.infura.io/ipfs/"+x,  
-        hashplz:summary[3]  };
+        manager_address: summary[2],
+        filehash:"https://ipfs.infura.io/ipfs/"+hash,  
+         };
     }
 
     onSubmit=async event=> {
@@ -63,7 +62,8 @@ class ContractShow extends Component{
     const {
       receiver_address,
       contract_info,
-      manager_address
+      manager_address,
+      filehash
     } = this.props;
     //console.log(receiver_address+" "+string_info+" "+manager);
     const items = [
@@ -82,6 +82,12 @@ class ContractShow extends Component{
         header:manager_address,
         meta:'Manager Address',
         description:'Manager created this contract',
+        style:{overflowWrap:'break-word'}
+      },
+      {
+        header:<Button primary href={this.props.filehash} Download >Download</Button>,
+        meta:'Data Link',
+        description:'Download our resources here',
         style:{overflowWrap:'break-word'}
       }
     ];
