@@ -21,14 +21,16 @@ class ContractShow extends Component{
   //  console.log("receiver_address "+receiver_address);
 
     const summary=await contract.methods.getSummary().call();
+    const x= await contract.methods.filehash().call();
     const array=await contract.methods.getmsgFromReceiver().call();
     console.log(array);
-    console.log(summary[0]+" "+summary[1]+" "+summary[2]);
+    console.log(summary[0]+" "+summary[1]+" "+summary[2]+" hashhhhhhhhhhhhhhhhhhhh"+x);
     return {
         address:props.query.address,
         receiver_address: summary[0],
         contract_info:  summary[1],
-        manager_address: summary[2]    };
+        manager_address: summary[2]+"    "+"https://ipfs.infura.io/ipfs/"+x,  
+        hashplz:summary[3]  };
     }
 
     onSubmit=async event=> {
@@ -39,7 +41,7 @@ class ContractShow extends Component{
     onClick=async event=> {
       event.preventDefault();
       const contract = Contract(this.props.address);
-      console.log(contract);
+      
       this.setState({loading2:true});
       try {
 
@@ -47,6 +49,7 @@ class ContractShow extends Component{
         await contract.methods.acceptRequest().send({
           from:accounts[0]
         });
+        
         this.setState({loading:false});
               Router.pushRoute(`/`);
       }catch(err) {

@@ -3,9 +3,9 @@ pragma experimental ABIEncoderV2;
 contract ContractDeployer {
 
     address[] public deployedContracts;
-        function createContract(address _reciever, string info_string) public {
+        function createContract(address _reciever, string info_string,string filehash) public {
         if(_reciever!=msg.sender){
-        address newContract = new MyContract( _reciever , info_string,msg.sender);
+        address newContract = new MyContract( _reciever , info_string,msg.sender,filehash);
         deployedContracts.push(newContract);
         }
     }
@@ -24,10 +24,12 @@ contract MyContract {
     string public contract_info;
     string[] public msgFromReceiver;
     string[] public msgFromManager;
-    function MyContract(address _reciever, string info_string,address Contract_manager) public {
+    string public filehash;
+    constructor(address _reciever, string info_string,address Contract_manager,string _filehash) public {
         manager = Contract_manager;
         reciever = _reciever;
         contract_info=info_string;
+        filehash = _filehash;
         isAccepted = false;
         }
 
@@ -37,6 +39,12 @@ contract MyContract {
     function getReceiverAddress() public view returns(address)
     {
       return reciever;
+    }
+    function getfilehash() public view returns(string){
+      return filehash;
+    }
+    function setfilehash(string hash) public {
+      filehash=hash;
     }
     function acceptRequest() public{
         require(msg.sender == reciever);
@@ -66,10 +74,10 @@ contract MyContract {
         require(msg.sender==manager&&!isAccepted);
         contract_info=s;
     }
-    function getSummary() public view returns(address,string,address
+    function getSummary() public view returns(address,string,address,string
       ){
         return(
-          reciever,contract_info,manager
+          reciever,contract_info,manager,filehash
           );
     }
 }
