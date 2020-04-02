@@ -17,7 +17,6 @@ class ContributeForm extends Component{
   onSubmit = async event=>{
     event.preventDefault();
     const contract = MyContract(this.props.address);
-    //console.log(contract);
     const manager_address=await contract.methods.getManagerAddress().call();
     const receiver_address=await contract.methods.getReceiverAddress().call();
     this.setState({manager:manager_address});
@@ -53,12 +52,12 @@ class ContributeForm extends Component{
     return (
       <Form onSubmit={this.onSubmit} error={!!this.state.errorMsg}>
       <Form.Field>
-      <label>Add Some Suggestions</label>
-      <Input value={this.state.value} onChange={event => this.setState({value: event.target.value})}>
+      <label style={this.props.isAccepted ? { display: 'none' } : {}}>Add Some Suggestions</label>
+      <Input value={this.state.value} onChange={event => this.setState({value: event.target.value})} style={this.props.isAccepted ? { display: 'none' } : {}}>
       </Input>
       </Form.Field>
       <Message error header="Oops!" content={this.state.errorMsg}/>
-      <Button primary loading={this.state.loading}>Add</Button>
+      <Button primary loading={this.state.loading} style={this.props.isAccepted ? { display: 'none' } : {}}>Add</Button>
       </Form>
     );
   }

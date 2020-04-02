@@ -21,7 +21,9 @@ class contractNew extends Component{
     transactionHash:'',
     gasUsed:'',
     txReceipt: '',
-    loading:false
+    loading:false,
+    manager_Name:'',
+    reciever_Name:''
 
   };
 
@@ -31,7 +33,7 @@ class contractNew extends Component{
     const file = event.target.files[0]
     let reader = new window.FileReader()
     reader.readAsArrayBuffer(file)
-    reader.onloadend = () => this.convertToBuffer(reader)    
+    reader.onloadend = () => this.convertToBuffer(reader)
   };
   convertToBuffer = async(reader) => {
     //file is converted to a buffer for upload to IPFS
@@ -49,9 +51,9 @@ class contractNew extends Component{
     const accounts =await web3.eth.getAccounts();
     const ethAddress= await storehash.options.address;
     this.setState({ethAddress});
-      
+
     await factory.methods
-    .createContract(this.state.address,this.state.stringinfo,this.state.ipfsHash)
+    .createContract(this.state.address,this.state.stringinfo,this.state.ipfsHash,this.state.manager_Name,this.state.reciever_Name)
     .send({
       from:accounts[0]
     });
@@ -67,18 +69,18 @@ class contractNew extends Component{
   onClick=async (event)=>{
     event.preventDefault();
 
-    
-    
+
+
     await ipfs.add(this.state.buffer, (err, ipfsHash) => {
       console.log(err,ipfsHash);
-      //setState by setting ipfsHash to ipfsHash[0].hash 
+      //setState by setting ipfsHash to ipfsHash[0].hash
       this.setState({ ipfsHash:ipfsHash[0].hash });
       console.log("hash"+this.state.ipfsHash);
-              
-      
-      }) 
-      
-    
+
+
+      })
+
+
   };
   render(){
     return (
@@ -86,6 +88,17 @@ class contractNew extends Component{
         <h3>Create a Contract or Agreement</h3>
         <Form onSubmit={this.onSubmit} error={!!this.state.errorMsg}>
           <Form.Field>
+          <label>Manager Name</label>
+          <Input
+          value={this.state.manager_Name}
+          onChange={event =>this.setState({manager_Name:event.target.value})}
+          />
+
+          <label>Receiver Name</label>
+          <Input
+          value={this.state.reciever_Name}
+          onChange={event =>this.setState({reciever_Name:event.target.value})}
+          />
           <label>Receiver Address</label>
           <Input label="address" labelPosition="right"
           value={this.state.address}
