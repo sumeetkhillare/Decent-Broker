@@ -2,6 +2,7 @@ pragma solidity ^0.4.17;
 pragma experimental ABIEncoderV2;
 contract ContractDeployer {
 
+    mapping(address=>bool) public map;
     address[] public deployedContracts;
         function createContract(address _reciever, string info_string,string filehash,string ManagerName,string ReceiverName) public {
         if(_reciever!=msg.sender){
@@ -9,6 +10,60 @@ contract ContractDeployer {
         deployedContracts.push(newContract);
         }
     }
+
+    function summaryOfInfo(address a,string s)public view returns (string []){
+        string[] array;
+        for(uint i=0;i<deployedContracts.length;i++)
+        {
+            MyContract my=MyContract(deployedContracts[i]);
+            if(keccak256(abi.encodePacked(s)) == keccak256(abi.encodePacked("Manager"))&&my.getManagerAddress()==a){
+                array.push(my.getInfo());
+            }
+            else if(keccak256(abi.encodePacked(s)) == keccak256(abi.encodePacked("Receiver"))&&my.getReceiverAddress()==a){
+                array.push(my.getInfo());
+            }
+            else if(keccak256(abi.encodePacked(s)) == keccak256(abi.encodePacked("Both"))&&((my.getReceiverAddress()==a)||(my.getManagerAddress()==a))){
+                array.push(my.getInfo());
+            }
+        }
+           return (array);
+    }
+    function summaryOfStatus(address a,string s)public view returns (bool []){
+        bool[] array;
+        for(uint i=0;i<deployedContracts.length;i++)
+        {
+            MyContract my=MyContract(deployedContracts[i]);
+            if(keccak256(abi.encodePacked(s)) == keccak256(abi.encodePacked("Manager"))&&my.getManagerAddress()==a){
+                array.push(my.checkAccepted());
+            }
+            else if(keccak256(abi.encodePacked(s)) == keccak256(abi.encodePacked("Receiver"))&&my.getReceiverAddress()==a){
+                array.push(my.checkAccepted());
+            }
+            else if(keccak256(abi.encodePacked(s)) == keccak256(abi.encodePacked("Both"))&&((my.getReceiverAddress()==a)||(my.getManagerAddress()==a))){
+                array.push(my.checkAccepted());
+            }
+        }
+           return (array);
+    }
+    function arrayGetAddress(address a,string s)public view returns (address []){
+        address[] array;
+
+        for(uint i=0;i<deployedContracts.length;i++)
+        {
+            MyContract my=MyContract(deployedContracts[i]);
+            if(keccak256(abi.encodePacked(s)) == keccak256(abi.encodePacked("Manager"))&&my.getManagerAddress()==a){
+                array.push(deployedContracts[i]);
+            }
+            else if(keccak256(abi.encodePacked(s)) == keccak256(abi.encodePacked("Receiver"))&&my.getReceiverAddress()==a){
+                array.push(deployedContracts[i]);
+            }
+            else if(keccak256(abi.encodePacked(s)) == keccak256(abi.encodePacked("Both"))&&((my.getReceiverAddress()==a)||(my.getManagerAddress()==a))){
+                array.push(deployedContracts[i]);
+            }
+        }
+           return array;
+    }
+
     function getDeployedContracts() public view returns (address[]){
         return deployedContracts;
     }
@@ -16,10 +71,24 @@ contract ContractDeployer {
         return deployedContracts.length;
     }
 
-    function getStatus(address add) public view returns(bool){
-        MyContract my=MyContract(add);
-        bool t=my.checkAccepted();
-        return t;
+    function getStatus() public view returns(bool[]){
+
+        bool[] status;
+        for(uint i=0;i<deployedContracts.length;i++)
+        {
+            MyContract my=MyContract(deployedContracts[i]);
+            status.push(my.checkAccepted());
+        }
+        return status;
+    }
+    function getInfo() public view returns (string[]){
+        string[] str;
+        for(uint i=0;i<deployedContracts.length;i++)
+        {
+            MyContract my=MyContract(deployedContracts[i]);
+            str.push(my.getInfo());
+        }
+        return str;
     }
     function getReceiver(address add) public view returns(address){
         MyContract my=MyContract(add);
@@ -36,6 +105,24 @@ contract ContractDeployer {
         address r=my.getReceiverAddress();
         address m=my.getManagerAddress();
         return (r,m);
+    }
+    function getManagerName() public view returns(string[]){
+        string[] str;
+        for(uint i=0;i<deployedContracts.length;i++)
+        {
+            MyContract my=MyContract(deployedContracts[i]);
+            str.push(my.getManagerName());
+        }
+        return str;
+    }
+    function getReceiverName()public view returns(string[]){
+        string[] str;
+        for(uint i=0;i<deployedContracts.length;i++)
+        {
+            MyContract my=MyContract(deployedContracts[i]);
+            str.push(my.getReceiverName());
+        }
+        return str;
     }
 }
 
@@ -63,6 +150,10 @@ contract MyContract {
 
     function getManagerAddress() public view returns(address){
       return manager;
+    }
+    function getInfo() public view returns(string)
+    {
+        return contract_info;
     }
     function getReceiverAddress() public view returns(address)
     {
@@ -114,7 +205,7 @@ contract MyContract {
         manager_Name=ManagerName;
     }
     function getManagerName() public view returns(string){
-        require(msg.sender==manager||msg.sender==reciever);
+        //require(msg.sender==manager||msg.sender==reciever);
         return manager_Name;
     }
 
@@ -123,7 +214,7 @@ contract MyContract {
             reciever_Name=ReceiverName;
     }
     function getReceiverName() public view returns(string){
-        require(msg.sender==manager||msg.sender==reciever);
+        //require(msg.sender==manager||msg.sender==reciever);
         return reciever_Name;
     }
 
