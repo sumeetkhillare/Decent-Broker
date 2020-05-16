@@ -3,6 +3,7 @@ import {Menu,Button} from 'semantic-ui-react';
 import {Link} from '../routes';
 import web3 from '../ethereum/web3';
 import {Router} from '../routes';
+import { Helmet } from 'react-helmet';
 class Header extends Component{
   clickMeToView=async event=> {
     var accounts;
@@ -43,9 +44,14 @@ class Header extends Component{
   render(){
   return (
     <Menu style={{marginTop:'10px'}}>
+      <Helmet>
+          <title>Contracts Management</title>
+          <link rel = "icon" href = "https://img.icons8.com/nolan/64/data-protection.png" 
+        type = "image/x-icon" /> 
+      </Helmet>
     <Link route="/">
     <a className="item">
-    SSV_Contracts
+    Contracts Management
     </a>
     </Link>
     <Menu.Menu position="right">

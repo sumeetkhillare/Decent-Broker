@@ -24,7 +24,8 @@ class contractNew extends Component{
     txReceipt: '',
     loading:false,
     manager_Name:'',
-    reciever_Name:''
+    reciever_Name:'',
+    fileload:false
   };
 
   captureFile =(event) => {
@@ -95,12 +96,13 @@ class contractNew extends Component{
     event.preventDefault();
 
 
-
+    this.setState({fileload:true})
     await ipfs.add(this.state.buffer, (err, ipfsHash) => {
       console.log(err,ipfsHash);
       //setState by setting ipfsHash to ipfsHash[0].hash
       this.setState({ ipfsHash:ipfsHash[0].hash });
       console.log("hash"+this.state.ipfsHash);
+      this.setState({fileload:false})
 
 
       })
@@ -134,8 +136,8 @@ class contractNew extends Component{
 
           <label>Upload a Single File on IPFS</label>
           <Input type="file" onChange = {this.captureFile}></Input>
-          <Button primary onClick={this.onClick}>Upload File</Button>
-          <Button primary loading={this.state.loading}>Create!</Button>
+          <Button primary onClick={this.onClick} loading={this.state.fileload}>Upload File</Button>
+          <Button primary loading={this.state.loading}>Created!</Button>
           </Form.Field>
         </Form>
       </Layout>
