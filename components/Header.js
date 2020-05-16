@@ -11,7 +11,6 @@ class Header extends Component{
       accounts= await web3.eth.getAccounts(),
       add=accounts[0]
     );
-    console.log(accounts);
     Router.pushRoute(`/AssignedToMe/${add}`);
   }
   clickMe=async event=> {
@@ -32,6 +31,15 @@ class Header extends Component{
     );
     Router.pushRoute(`/All/${add}`);
   }
+  clickViewProfile=async event=> {
+    var accounts;
+    var add;
+    Promise.all(
+      accounts= await web3.eth.getAccounts(),
+      add=accounts[0]
+    );
+    Router.pushRoute(`/showProfiles/${add}`);
+  }
   render(){
   return (
     <Menu style={{marginTop:'10px'}}>
@@ -51,6 +59,10 @@ class Header extends Component{
     />
     <Button className="item" onClick={this.clickAll}
     content="All"
+    primary
+    />
+    <Button className="item" onClick={this.clickViewProfile}
+    content="View Profiles"
     primary
     />
     <Link route="/">

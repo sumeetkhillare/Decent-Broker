@@ -6,6 +6,7 @@ import web3 from '../../ethereum/web3';
 import {Router} from '../../routes';
 import ipfs from '../../ipfs/ipfs';
 import storehash from '../../ipfs/storehash';
+import factoryMyProfile from '../../ethereum/factoryMyProfile';
 
 
 
@@ -24,7 +25,6 @@ class contractNew extends Component{
     loading:false,
     manager_Name:'',
     reciever_Name:''
-
   };
 
   captureFile =(event) => {
@@ -45,21 +45,46 @@ class contractNew extends Component{
 
   onSubmit=async (event)=>{
     event.preventDefault();
-
     this.setState({loading:true,errorMsg:''});
     try{
+    var accMan=await factoryMyProfile.methods.getUsersAddress(this.state.manager_Name).call();
+    var accRec=await factoryMyProfile.methods.getUsersAddress(this.state.reciever_Name).call();
     const accounts =await web3.eth.getAccounts();
     const ethAddress= await storehash.options.address;
     this.setState({ethAddress});
-
-    await factory.methods
-    .createContract(this.state.address,this.state.stringinfo,this.state.ipfsHash,this.state.manager_Name,this.state.reciever_Name)
-    .send({
-      from:accounts[0]
-    });
-    var x= await factory.methods.getfilehash().call();
-    console.log(x);
-    Router.pushRoute('/');
+    if(this.state.manager_Name==""||this.state.receiver_Name==""||this.state.stringinfo==""||this.state.ipfsHash=="")
+    {
+      alert("Fill all information");
+    }else
+    if(accMan=="0x0000000000000000000000000000000000000000")
+    {
+      alert("Create Account First");
+      Router.pushRoute('/CreateMyProfile/index');
+    }else
+    if(accRec=="0x0000000000000000000000000000000000000000")
+    {
+      alert("Receiver Not Found!!!\nCheck List of Users!!!");
+      Router.pushRoute('/contracts/new');
+    }else
+    if(accRec==accMan){
+      alert("Manager should not be receiver");
+      Router.pushRoute('/contracts/new');
+    }else
+    if(accMan!=accounts[0])
+    {
+      alert("Sign in with same accounts");
+      Router.pushRoute('/');
+    }else {
+      await factory.methods
+      .createContract(accRec,this.state.stringinfo,this.state.ipfsHash,this.state.manager_Name,this.state.reciever_Name)
+      .send({
+        from:accounts[0]
+      }).then(function(){
+        Router.pushRoute('/');
+      });
+      var x= await factory.methods.getfilehash().call();
+      console.log(x);
+    }
     }catch(err){
     this.setState({errorMsg: err.message});
     }
@@ -98,11 +123,6 @@ class contractNew extends Component{
           <Input
           value={this.state.reciever_Name}
           onChange={event =>this.setState({reciever_Name:event.target.value})}
-          />
-          <label>Receiver Address</label>
-          <Input label="address" labelPosition="right"
-          value={this.state.address}
-          onChange={event =>this.setState({address:event.target.value})}
           />
 
           <label>Info about Contract</label>

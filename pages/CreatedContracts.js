@@ -8,7 +8,6 @@ import web3 from '../ethereum/web3';
 import {Router} from '../routes';
 class CreatedContracts extends Component{
   static async getInitialProps(props){
-    //var array_getManager = await factory.methods.arrayGetManager(this.props.address).call();
     console.log(props.query.address);
     var contracts=await factory.methods.arrayGetAddress(props.query.address,"Manager").call();
     var info_string=await factory.methods.summaryOfInfo(props.query.address,"Manager").call();

@@ -27,24 +27,21 @@ class ContributeForm extends Component{
       const accounts = await web3.eth.getAccounts();
       var d=new Date();
       var n=this.state.value+"\n at: "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"   "+d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear();
-      console.log(n);
       this.setState({date:n});
       if(accounts[0]==receiver_address)
       {await contract.methods.setMsgfromReceiver(n).send({
         from: accounts[0],
       });
-      console.log("receiver "+this.state.reciever);
     }else if(accounts[0]==manager_address){
       await contract.methods.setMsgfromManager(n).send({
         from: accounts[0],
       });
-      console.log("manager "+this.state.manager);
+
     }
 
       Router.replaceRoute(`/contracts/${this.props.address}`);
     }catch(err){
       this.setState({errorMsg:err.message});
-      console.log(MyContract);
     }
     this.setState({loading:false,value:''});
   };

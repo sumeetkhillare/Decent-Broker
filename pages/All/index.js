@@ -8,12 +8,9 @@ import web3 from '../../ethereum/web3';
 import {Router} from '../../routes';
 class AssignedToMe extends Component{
   static async getInitialProps(props){
-    //var array_getManager = await factory.methods.arrayGetManager(this.props.address).call();
-    console.log(props.query.address);
     var contracts=await factory.methods.arrayGetAddress(props.query.address,"Both").call();
     var info_string=await factory.methods.summaryOfInfo(props.query.address,"Both").call();
     var status=await factory.methods.summaryOfStatus(props.query.address,"Both").call();
-    console.log(status);
     return {contracts,info_string,status};
   }
   renderContracts(){
@@ -21,7 +18,6 @@ class AssignedToMe extends Component{
     var array=this.props.contracts;
     var info_string=this.props.info_string;
     var status_array=this.props.status;
-    console.log(status_array);
     const item1 = this.props.contracts.map(function(address,i){
       var info=info_string[i];
       var status=status_array[i];

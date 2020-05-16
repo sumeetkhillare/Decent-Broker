@@ -5,6 +5,7 @@ import {Card,Grid,Button,Form,Input,Message} from 'semantic-ui-react';
 import Contract from '../../ethereum/contract';
 import {Router} from '../../routes';
 
+import factoryMyProfile from '../../ethereum/factoryMyProfile'
 import web3 from '../../ethereum/web3';
 import ContributeForm from '../../components/ContributeForm';
 class ContractShow extends Component{
@@ -15,30 +16,27 @@ class ContractShow extends Component{
     filehash:''
   };
   static async getInitialProps(props){
-
-
+    //var dep_contracts=await factoryMyProfile.methods.getDeployedContracts().call();
     const contract=Contract(props.query.address);
     const isAccepted=await contract.methods.checkAccepted().call();
     const summary=await contract.methods.getSummary().call();
     const hash= await contract.methods.filehash().call();
     const array=await contract.methods.getmsgFromReceiver().call();
     const manager=await contract.methods.getManagerAddress().call();
-    var isManager=false;
+    const receiver=await contract.methods.getReceiverAddress().call();
+    var isReceiver=false;
     const accounts = await web3.eth.getAccounts();
-    if(accounts[0]==manager)
+    if(accounts[0]==receiver)
     {
-      isManager=true;
+      isReceiver=true;
     }
-    var not_visibility=false;
-    if(isManager)
+    var not_visibility=true;
+    if(isReceiver&&!isAccepted)
     {
-      not_visibility=true;
+      not_visibility=false;
     }else if(isAccepted){
       not_visibility=true;
     }
-    console.log("not_visibility: "+not_visibility);
-    console.log(array);
-
     return {
         address:props.query.address,
         receiver_address: summary[0],
@@ -72,7 +70,7 @@ class ContractShow extends Component{
         this.setState({loading:false});
               Router.pushRoute(`/`);
       }catch(err) {
-        //console.log(Contract);
+        console.log(err);
       }
       this.setState({loading2:false,value:''});
     };
@@ -87,7 +85,6 @@ class ContractShow extends Component{
       manager_Name,
       receiver_Name
     } = this.props;
-    //console.log(receiver_address+" "+string_info+" "+manager);
     const items = [
       {
         header:receiver_address,
