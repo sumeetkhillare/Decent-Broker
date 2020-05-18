@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Card,Button,Form} from 'semantic-ui-react';
+import {Card,Button,Form,Icon} from 'semantic-ui-react';
 import factory from '../ethereum/factory';
 import Layout from '../components/Layout'
 import {Link} from '../routes';
@@ -21,14 +21,13 @@ class ContractIndex extends Component{
     ).then(function(val){
       console.log(val);
     });
-
     var info_string=await factory.methods.getInfo().call();
     var status_array=await factory.methods.getStatus().call();
     const accounts=await web3.eth.getAccounts();
     var manager_Name=await factory.methods.getManagerName().call();
     var receiver_Name=await factory.methods.getReceiverName().call();
-
-    return {address:address,contracts,info_string,status_array,receiver_Name,manager_Name};
+    var date = await factory.methods.getDate().call();
+    return {address:address,contracts,info_string,status_array,receiver_Name,manager_Name,date};
   }
   onReceiver=async event=> {
     var deployedContracts=this.props.contracts;
@@ -67,8 +66,10 @@ class ContractIndex extends Component{
       var status_array=this.props.status_array;
       var manager_Name=this.props.manager_Name;
       var receiver_Name=this.props.receiver_Name;
+      var date=this.props.date;
       var accounts;
       var add;
+      console.log(date);
       Promise.all(
         accounts= await web3.eth.getAccounts(),
         add=accounts[0]
@@ -143,41 +144,53 @@ class ContractIndex extends Component{
     var status_array=this.props.status_array;
     var receiver_Name=this.props.receiver_Name;
     var manager_Name=this.props.manager_Name;
+    var date=this.props.date;
     const item1 = this.props.info_string.map(function(info_string,i){
       var address=array[i];
       var status=status_array[i];
       var manager=manager_Name[i];
       var receiver=receiver_Name[i];
+      var d=date[i];
       if(!status)
       {
         return {
-          header: info_string,
+
+          header: <h3 class="ui header" class="ui red header">{info_string}</h3>,
           description:(
               <Link route={`/contracts/${address}`} color="green" >
-                <Button color="red" floated="right">
-                  View Contract
-                </Button>
+              <Button animated className="item" floated="right" basic color="red">
+                <Button.Content visible>View Contract</Button.Content>
+                <Button.Content hidden>
+                  <Icon name='envelope open outline' />
+                </Button.Content>
+              </Button>
               </Link>
             ),
           fluid:true,
-          meta:"NOT-ACCEPTED \nManager: "+manager+'\nReceiver: '+receiver
+          color:"red",
+          meta:<h4 class="ui header" class="ui grey header">NOT-ACCEPTED <br/>Manager: {manager}<br/> Receiver: {receiver}<br/>Date: {d}</h4>
 
         }
       }
       else
       {
         return {
-          header: info_string,
-          description:(
-              <Link route={`/contracts/${address}`} color="green" >
-                <Button color="green" floated="right">
-                  View Contract
-                </Button>
-              </Link>
-            ),
-          fluid:true,
-          meta:"ACCEPTED \nManager: "+manager+'\nReceiver: '+receiver
-        }
+            header: <h3 class="ui header" class="ui green header">{info_string}</h3>,
+            description:(
+                <Link route={`/contracts/${address}`} color="green" >
+                  <Button animated className="item" floated="right" basic color="green">
+                    <Button.Content visible>View Contract</Button.Content>
+                    <Button.Content hidden>
+                      <Icon name='envelope open outline' />
+                    </Button.Content>
+                  </Button>
+                </Link>
+              ),
+            fluid:true,
+            color:"green",
+            meta:<h4 class="ui header" class="ui grey header">ACCEPTED <br/>Manager: {manager}<br/> Receiver: {receiver}<br/>Date: {d}</h4>
+          }
+
       }
     });
     return <Card.Group items={item1}/>;
@@ -187,17 +200,14 @@ class ContractIndex extends Component{
     return (
       <Layout>
       <div>
-    <h3>Current Global Contracts</h3>
-    <Link route="/contracts/new">
-    <a>
-    <Button floated="right"
-    content="Create Contract"
-    icon="add circle"
-    primary
-    />
-    </a>
-    </Link>
-    {this.renderContracts()}
+      <h2 class="ui header" class="ui grey header">
+      <div class="content">
+      <Icon name="globe"/>
+        Global Contracts
+      <div class="sub header" basic color="grey">List of all contracts deployed on Contract Management</div>
+      </div>
+      </h2>
+      {this.renderContracts()}
     </div>
     </Layout>
   );

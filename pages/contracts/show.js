@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Link} from '../../routes';
 import Layout from '../../components/Layout';
-import {Card,Grid,Button,Form,Input,Message} from 'semantic-ui-react';
+import {Card,Grid,Button,Form,Input,Message,Icon} from 'semantic-ui-react';
 import Contract from '../../ethereum/contract';
 import {Router} from '../../routes';
 
@@ -25,6 +25,7 @@ class ContractShow extends Component{
     const manager=await contract.methods.getManagerAddress().call();
     const receiver=await contract.methods.getReceiverAddress().call();
     var isReceiver=false;
+    var date = await contract.methods.getDate().call();
     const accounts = await web3.eth.getAccounts();
     if(accounts[0]==receiver)
     {
@@ -46,7 +47,7 @@ class ContractShow extends Component{
         visibility:not_visibility,
         isAccepted:isAccepted,
         manager_Name: summary[4],
-        receiver_Name: summary[5]
+        receiver_Name: summary[5],date
          };
     }
 
@@ -61,9 +62,11 @@ class ContractShow extends Component{
 
       this.setState({loading2:true});
       try {
-
+        var d=new Date();
+        var date=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"   "+d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear()
+        console.log(date);
         const accounts = await web3.eth.getAccounts();
-        await contract.methods.acceptRequest().send({
+        await contract.methods.acceptRequest(date).send({
           from:accounts[0]
         });
 
@@ -83,40 +86,40 @@ class ContractShow extends Component{
       manager_address,
       filehash,
       manager_Name,
-      receiver_Name
+      receiver_Name,date
     } = this.props;
     const items = [
       {
-        header:receiver_address,
+        header:<h3 class="ui header" class="ui grey header">{receiver_address}</h3>,
         meta:'Address of Receiver',
         description:'The Receiver is person with which manager wants contract',
         style:{overflowWrap:'break-word'}
       },
       {
-        header:contract_info,
+        header:<h3 class="ui header" class="ui grey header">{contract_info}<br/>{date}</h3>,
         meta:'Contract info',
         description:'Information of terms and conditions of contract'
       },
       {
-        header:manager_address,
+        header:<h3 class="ui header" class="ui grey header">{manager_address}</h3>,
         meta:'Manager Address',
         description:'Manager created this contract',
         style:{overflowWrap:'break-word'}
       },
       {
-        header:manager_Name,
+        header:<h3 class="ui header" class="ui grey header">{manager_Name}</h3>,
         meta:'Manager of Contract',
         description:'The Name of Manager is name of person who created contract',
         style:{overflowWrap:'break-word'}
       },
       {
-        header:receiver_Name,
+        header:<h3 class="ui header" class="ui grey header">{receiver_Name}</h3>,
         meta:'Name of Receiver',
         description:'The Name of Receiver is name of person with which manager wants contract',
         style:{overflowWrap:'break-word'}
       },
       {
-        header:<Button primary href={this.props.filehash} Download >Download</Button>,
+        header:<Button basic color="blue" href={this.props.filehash} Download >Download</Button>,
         meta:'Data Link',
         description:'Download our resources here',
         style:{overflowWrap:'break-word'}
@@ -127,7 +130,13 @@ class ContractShow extends Component{
   render(){
     return (
       <Layout>
-        <h3>Contract Show</h3>
+      <h2 class="ui header" class="ui grey header">
+      <div class="content">
+      <Icon name="envelope open outline"/>
+        Contract Details
+      </div>
+      </h2>
+
         <Grid>
           <Grid.Row>
             <Grid.Column width={10}>
@@ -137,9 +146,12 @@ class ContractShow extends Component{
               <ContributeForm address={this.props.address} isAccepted={this.props.isAccepted}/>
               <Link route={`/contracts/${this.props.address}/suggestions`}>
                 <a>
-                  <Button floated="right"
-                    content="View Suggestions"
-                    primary/>
+                    <Button animated className="item" floated="right" basic color="blue">
+                      <Button.Content visible>View Suggestions</Button.Content>
+                      <Button.Content hidden>
+                        <Icon name='eye' />
+                      </Button.Content>
+                    </Button>
                 </a>
               </Link>
             </Grid.Column>
@@ -147,7 +159,7 @@ class ContractShow extends Component{
           <Grid.Row>
             <Grid.Column>
               <Form onClick={this.onClick}>
-              <Button primary loading={this.state.loading2} style={this.props.visibility ? { display: 'none' } : {} }>
+              <Button basic color="blue" loading={this.state.loading2} style={this.props.visibility ? { display: 'none' } : {} }>
               Accept Contract</Button>
               </Form>
             </Grid.Column>

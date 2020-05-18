@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Link} from '../../routes';
-import Layout from '../../components/Layout';
-import {Card,Grid,Button,Form,Input,Message} from 'semantic-ui-react';
+import Layout from '../../components/Layout-Profile';
+import {Card,Grid,Button,Form,Input,Message,Icon} from 'semantic-ui-react';
 import Contract from '../../ethereum/contract';
 import {Router} from '../../routes';
 import web3 from '../../ethereum/web3';
@@ -70,27 +70,35 @@ class ContractShow extends Component{
           p=true;
 
         return {
-          header: name,
+          header: <h3 class="ui header" class="ui green header">{name}</h3>,
           description:(
             <Link route={`/view_user_profile/${add}`} color="green" >
-              <Button color="green" floated="right">
-                View My Profile
+              <Button animated className="item" floated="right" basic color="green">
+                <Button.Content visible>View My Profile</Button.Content>
+                <Button.Content hidden>
+                  <Icon name='eye' />
+                </Button.Content>
               </Button>
             </Link>
             ),
           fluid:true,
+          color:"green"
         }
       }else {
         return {
-          header: name,
+          header: <h3 class="ui header" class="ui teal header">{name}</h3>,
           description:(
             <Link route={`/view_user_profile/${add}`} color="green" >
-              <Button color="teal" floated="right">
-                View Profile
+              <Button animated className="item" floated="right" basic color="teal">
+                <Button.Content visible>View Profile</Button.Content>
+                <Button.Content hidden>
+                  <Icon name='eye' />
+                </Button.Content>
               </Button>
             </Link>
             ),
           fluid:true,
+          color:"teal"
         }
       }
     });
@@ -102,12 +110,16 @@ class ContractShow extends Component{
   render(){
     return (
       <Layout>
-        <h3>Users</h3>
-        <h5 style={{color:"red"}} style={this.props.visibility ? { display: 'none' } : {}} >
-        You don't have account!!! Please create account in order to use contract management project</h5>
-        <Button className="item" onClick={this.clickViewProfile} style={this.props.visibility ? { display: 'none' } : {}}
+      <h2 class="ui header" class="ui grey header">
+      <div class="content">
+      <Icon name="users"/>
+        Users
+      </div>
+      </h2>
+        <h5 style={this.props.visibility ? { display: 'none' } : {}} class="ui header" class="ui red header" >
+        You don't have account!!!<br/> Please create account in order to use contract management project</h5>
+        <Button className="item" basic color="red" onClick={this.clickViewProfile} style={this.props.visibility ? { display: 'none' } : {}}
         content="Create Account" floated="right"
-        primary
         />
         {this.renderContracts()}
 

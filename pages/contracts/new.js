@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import Layout from '../../components/Layout';
-import {Form,Button,Input,Message} from 'semantic-ui-react';
+import {Form,Button,Input,Message,Icon} from 'semantic-ui-react';
 import factory from '../../ethereum/factory';
 import web3 from '../../ethereum/web3';
 import {Router} from '../../routes';
@@ -76,8 +76,11 @@ class contractNew extends Component{
       alert("Sign in with same accounts");
       Router.pushRoute('/');
     }else {
+      var d=new Date();
+      var date=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"   "+d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear()
+      console.log(date);
       await factory.methods
-      .createContract(accRec,this.state.stringinfo,this.state.ipfsHash,this.state.manager_Name,this.state.reciever_Name)
+      .createContract(accRec,this.state.stringinfo,this.state.ipfsHash,this.state.manager_Name,this.state.reciever_Name,date)
       .send({
         from:accounts[0]
       }).then(function(){
@@ -112,32 +115,37 @@ class contractNew extends Component{
   render(){
     return (
       <Layout >
-        <h3>Create a Contract or Agreement</h3>
-        <Form onSubmit={this.onSubmit} error={!!this.state.errorMsg}>
+        <h2 class="ui header" class="ui grey header">
+        <div class="content">
+        <Icon name="address book outline"/>
+          Create New Contract
+        </div>
+        </h2>
+      <Form onSubmit={this.onSubmit} error={!!this.state.errorMsg}>
           <Form.Field>
-          <label>Manager Name</label>
+          <label><h4 class="ui header" class="ui grey header">Manager Name</h4></label>
           <Input
           value={this.state.manager_Name}
           onChange={event =>this.setState({manager_Name:event.target.value})}
           />
 
-          <label>Receiver Name</label>
+          <label><h4 class="ui header" class="ui grey header">Receiver Name</h4></label>
           <Input
           value={this.state.reciever_Name}
           onChange={event =>this.setState({reciever_Name:event.target.value})}
           />
 
-          <label>Info about Contract</label>
+          <label><h4 class="ui header" class="ui grey header">Info About Contact</h4></label>
           <Input
           value={this.state.stringinfo}
           onChange={event =>this.setState({stringinfo:event.target.value})}
           />
           {/* <Message error header="Oops!" content={this.state.errorMsg}/>  faltu error detoy*/}
 
-          <label>Upload a Single File on IPFS</label>
+          <label><h4 class="ui header" class="ui grey header">Upload a single file on IPFS</h4></label>
           <Input type="file" onChange = {this.captureFile}></Input>
-          <Button primary onClick={this.onClick} loading={this.state.fileload}>Upload File</Button>
-          <Button primary loading={this.state.loading}>Created!</Button>
+          <Button basic color="teal" onClick={this.onClick} loading={this.state.fileload}>Upload File</Button>
+          <Button basic color="teal" loading={this.state.loading}>Created!</Button>
           </Form.Field>
         </Form>
       </Layout>

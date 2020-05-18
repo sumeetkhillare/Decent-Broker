@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Form ,Input,Message,Button} from 'semantic-ui-react';
+import {Form ,Input,Message,Button,Icon} from 'semantic-ui-react';
 import MyContract from '../ethereum/contract';
 import web3 from '../ethereum/web3';
 import {Router} from '../routes';
@@ -23,7 +23,6 @@ class ContributeForm extends Component{
     this.setState({reciever:receiver_address});
     this.setState({loading:true});
     try{
-
       const accounts = await web3.eth.getAccounts();
       var d=new Date();
       var n=this.state.value+"\n at: "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"   "+d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear();
@@ -49,12 +48,23 @@ class ContributeForm extends Component{
     return (
       <Form onSubmit={this.onSubmit} error={!!this.state.errorMsg}>
       <Form.Field>
-      <label style={this.props.isAccepted ? { display: 'none' } : {}}>Add Some Suggestions</label>
+      <label style={this.props.isAccepted ? { display: 'none' } : {}}>
+      <h4 class="ui header" class="ui grey header">
+      <div class="content">
+      <Icon name="edit outline"/>
+        Add suggestions
+      </div>
+      </h4></label>
       <Input value={this.state.value} onChange={event => this.setState({value: event.target.value})} style={this.props.isAccepted ? { display: 'none' } : {}}>
       </Input>
       </Form.Field>
       <Message error header="Oops!" content={this.state.errorMsg}/>
-      <Button primary loading={this.state.loading} style={this.props.isAccepted ? { display: 'none' } : {}}>Add</Button>
+      <Button animated className="item" floated="right" basic color="blue" loading={this.state.loading} style={this.props.isAccepted ? { display: 'none' } : {}}>
+        <Button.Content visible>Add</Button.Content>
+        <Button.Content hidden>
+          <Icon name='plus circle'/>
+        </Button.Content>
+      </Button>
       </Form>
     );
   }

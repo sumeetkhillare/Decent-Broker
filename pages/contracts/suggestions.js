@@ -22,9 +22,10 @@ class Suggestions extends Component{
   renderContractsReceiverMsg(){
     const items = this.props.contracts1.map(address =>{
       return {
-        header: address,
+        header: <h3 class="ui header" class="ui grey header">{address}</h3>,
         description:"",
-        fluid:true
+        fluid:true,
+        color:"blue"
       }
     });
     return <Card.Group items={items}/>;
@@ -33,9 +34,10 @@ class Suggestions extends Component{
   renderContractsManagerMsg(){
     const items = this.props.contracts2.map(address =>{
       return {
-        header: address,
+        header: <h3 class="ui header" class="ui grey header">{address}</h3>,
         description:"",
-        fluid:true
+        fluid:true,
+        color:"blue"
       }
     });
     return <Card.Group items={items}/>;
@@ -48,11 +50,11 @@ class Suggestions extends Component{
               <Grid>
                 <Grid.Row>
                   <Grid.Column width={8}>
-                    <h3>Receiver</h3>
+                    <h3 class="ui header" class="ui grey header">Receiver</h3>
                     {this.renderContractsReceiverMsg()}
                   </Grid.Column>
                   <Grid.Column width={8}>
-                    <h3>Manager</h3>
+                    <h3 class="ui header" class="ui grey header">Manager</h3>
                     {this.renderContractsManagerMsg()}
                   </Grid.Column>
                 </Grid.Row>

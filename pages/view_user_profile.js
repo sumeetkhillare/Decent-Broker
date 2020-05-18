@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Link} from '../routes';
 import Layout from '../components/Layout';
-import {Card,Grid,Button,Form,Input,Message} from 'semantic-ui-react';
+import {Card,Grid,Button,Form,Input,Message,Icon} from 'semantic-ui-react';
 import Contract from '../ethereum/contract';
 import {Router} from '../routes';
 import web3 from '../ethereum/web3';
@@ -26,16 +26,18 @@ class ContractShow extends Component{
     render(){
     return (
       <Layout>
-        <h2>{this.props.name}</h2>
-        <div>
-        Mbno:{this.props.mbno}
-        <br/>
-        Gmail:{this.props.gmail}
-        <br/>
-        Residential Address:{this.props.radd}
-        <br/>
-        Profession:{this.props.profession}
+        <h1 class="ui header" class="ui grey header" >
+        <div class="content">
+        <Icon name="user"/>
+          {this.props.name}
+        <div class="sub header" basic color="grey">Profession:{this.props.profession}</div>
         </div>
+        </h1>
+        <h4 class="ui header" class="ui grey header">Mbno:{this.props.mbno}</h4>
+        <h4 class="ui header" class="ui grey header">Gmail:{this.props.gmail}</h4>
+        <h4 class="ui header" class="ui grey header">Residential Address:{this.props.radd}</h4>
+        <h4 class="ui header" class="ui grey header">Profession:{this.props.profession}</h4>
+
       </Layout>
     );
   }

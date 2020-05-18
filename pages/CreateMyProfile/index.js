@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Link} from '../../routes';
-import Layout from '../../components/Layout';
-import {Card,Grid,Button,Form,Input,Message} from 'semantic-ui-react';
+import Layout from '../../components/Layout-Profile'
+import {Card,Grid,Button,Form,Input,Message,Icon} from 'semantic-ui-react';
 import Contract from '../../ethereum/contract';
 import {Router} from '../../routes';
 import web3 from '../../ethereum/web3';
@@ -27,7 +27,7 @@ class ContractShow extends Component{
     if(name==''||email==''||residentialAddress==''||mbno==''||profession=='')
     {
       alert("fill all details");
-    } 
+    }
     else
     {
     Promise.all(
@@ -49,34 +49,39 @@ class ContractShow extends Component{
   render(){
     return (
       <Layout>
-        <h3>Create Profile</h3>
+        <h2 class="ui header" class="ui grey header">
+        <div class="content">
+        <Icon name="user plus"/>
+          Create New Profile
+        </div>
+        </h2>
         <Form onSubmit={this.onSubmit} >
           <Form.Field>
-          <label>Name</label>
+          <label><h4 class="ui header" class="ui grey header">Name</h4></label>
           <Input
           value={this.state.Name}
           onChange={event =>this.setState({Name:event.target.value})}
           />
-          <label>Email</label>
+          <label><h4 class="ui header" class="ui grey header">Email</h4></label>
           <Input
           value={this.state.Email}
           onChange={event =>this.setState({Email:event.target.value})}
           />
-          <label>Residential Address</label>
+          <label><h4 class="ui header" class="ui grey header">ResidentialAddress</h4></label>
           <Input value={this.state.ResidentialAddress}
           onChange={event =>this.setState({ResidentialAddress:event.target.value})}
           />
-          <label>MbNo</label>
+          <label><h4 class="ui header" class="ui grey header">Mbno</h4></label>
           <Input
           value={this.state.Mbno}
           onChange={event =>this.setState({Mbno:event.target.value})}
           />
-          <label>Profession</label>
+          <label><h4 class="ui header" class="ui grey header">Profession</h4></label>
           <Input
           value={this.state.Profession}
           onChange={event =>this.setState({Profession:event.target.value})}
           />
-          <Button primary loading={this.state.loading} onClick={this.onClick}>Created!</Button>
+          <Button basic color="teal" loading={this.state.loading} onClick={this.onClick}>Create!</Button>
           </Form.Field>
         </Form>
       </Layout>

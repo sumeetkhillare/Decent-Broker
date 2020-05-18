@@ -4,9 +4,9 @@ contract ContractDeployer {
 
     mapping(address=>bool) public map;
     address[] public deployedContracts;
-        function createContract(address _reciever, string info_string,string filehash,string ManagerName,string ReceiverName) public {
+        function createContract(address _reciever, string info_string,string filehash,string ManagerName,string ReceiverName,string Date) public {
         if(_reciever!=msg.sender){
-        address newContract = new MyContract( _reciever , info_string,msg.sender,filehash,ManagerName,ReceiverName);
+        address newContract = new MyContract( _reciever , info_string,msg.sender,filehash,ManagerName,ReceiverName,Date);
         deployedContracts.push(newContract);
         }
     }
@@ -90,6 +90,15 @@ contract ContractDeployer {
         }
         return str;
     }
+    function getDate() public view returns (string[]){
+        string[] str;
+        for(uint i=0;i<deployedContracts.length;i++)
+        {
+            MyContract my=MyContract(deployedContracts[i]);
+            str.push(my.getDate());
+        }
+        return str;
+    }
     function getReceiver(address add) public view returns(address){
         MyContract my=MyContract(add);
         address t=my.getReceiverAddress();
@@ -135,8 +144,9 @@ contract MyContract {
     string public contract_info;
     string[] public msgFromReceiver;
     string[] public msgFromManager;
+    string public Date;
     string public filehash;
-    constructor(address _reciever, string info_string,address Contract_manager,string _filehash,string ManagerName,string ReceiverName) public {
+    constructor(address _reciever, string info_string,address Contract_manager,string _filehash,string ManagerName,string ReceiverName,string date) public {
         manager = Contract_manager;
         reciever = _reciever;
         contract_info=info_string;
@@ -144,7 +154,7 @@ contract MyContract {
         isAccepted = false;
         manager_Name=ManagerName;
         reciever_Name=ReceiverName;
-
+        Date=date;
 
     }
 
@@ -165,9 +175,10 @@ contract MyContract {
     function setfilehash(string hash) public {
       filehash=hash;
     }
-    function acceptRequest() public{
+    function acceptRequest(string date) public{
         require(msg.sender == reciever);
         isAccepted = true;
+        Date=date;
     }
     function checkAccepted() public view returns(bool){
       return isAccepted;
@@ -177,7 +188,9 @@ contract MyContract {
         require(msg.sender==reciever&&!isAccepted);
         msgFromReceiver.push(msgReceiver);
     }
-
+    function getDate() public returns(string){
+        return Date;
+    }
     function getmsgFromReceiver() public view returns(string[]){
       return msgFromReceiver;
     }

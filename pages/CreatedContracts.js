@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
-import {Card,Button,Form} from 'semantic-ui-react';
+import {Card,Button,Form,Icon} from 'semantic-ui-react';
 import factory from '../ethereum/factory';
-import Layout from '../components/Layout'
+import Layout from '../components/Layout-Profile'
 import {Link} from '../routes';
 import Contract from '../ethereum/contract';
 import web3 from '../ethereum/web3';
@@ -26,28 +26,36 @@ class CreatedContracts extends Component{
       var status=status_array[i];
       if(status){
         return {
-          header: info,
+          header: <h3 class="ui header" class="ui green header">{info}</h3>,
           description:(
-              <Link route={`/contracts/${address}`} color="green" >
-                <Button color="green" floated="right">
-                  View Contract
-                </Button>
+              <Link route={`/contracts/${address}`} >
+              <Button animated className="item" floated="right" basic color="green">
+                <Button.Content visible>View Contract</Button.Content>
+                <Button.Content hidden>
+                  <Icon name='envelope open outline' />
+                </Button.Content>
+              </Button>
               </Link>
             ),
-          fluid:true
+          fluid:true,
+          color:"green"
         }
       }
     else if(!status){
         return{
-          header: info,
+          header: <h3 class="ui header" class="ui red header">{info}</h3>,
           description:(
-            <Link route={`/contracts/${address}`} color="green" >
-              <Button color="red" floated="right">
-                View Contract
-              </Button>
+            <Link route={`/contracts/${address}`} >
+            <Button animated className="item" floated="right" basic color="red">
+              <Button.Content visible>View Contract</Button.Content>
+              <Button.Content hidden>
+                <Icon name='envelope open outline' />
+              </Button.Content>
+            </Button>
             </Link>
           ),
-        fluid:true
+        fluid:true,
+        color:"red"
       }
     };
   });
@@ -58,17 +66,13 @@ class CreatedContracts extends Component{
     return(
       <Layout>
       <div>
-    <h3>Created Contracts</h3>
-    <Link route="/contracts/new">
-    <a>
-    <Button floated="right"
-    content="Create Contract"
-    icon="add circle"
-    primary
-    />
-    </a>
-    </Link>
-    {this.renderContracts()}
+      <h2 class="ui header" class="ui grey header">
+      <div class="content">
+      <Icon name="history icon"/>
+        Created Contracts
+      </div>
+      </h2>
+      {this.renderContracts()}
     </div>
     </Layout>
     );
