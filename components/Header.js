@@ -36,11 +36,10 @@ class Header extends Component{
   return (
     <Menu style={{marginTop:'10px'}}>
       <Helmet>
-          <title>Contracts Management</title>
+          <title>Decent Broker</title>
           <link rel = "icon" href = "https://img.icons8.com/nolan/64/data-protection.png"
         type = "image/x-icon" />
       </Helmet>
-
     <Button animated basic color='grey' className="item" onClick={this.clickToGlobal}>
       <Button.Content visible>Global Contract</Button.Content>
       <Button.Content hidden>
