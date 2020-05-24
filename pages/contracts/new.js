@@ -145,7 +145,7 @@ class contractNew extends Component{
           <label><h4 class="ui header" class="ui grey header">Upload a single file on IPFS</h4></label>
           <Input type="file" onChange = {this.captureFile}></Input>
           <Button basic color="teal" onClick={this.onClick} loading={this.state.fileload}>Upload File</Button>
-          <Button basic color="teal" loading={this.state.loading}>Created!</Button>
+          <Button basic color="teal" loading={this.state.loading}>Create</Button>
           </Form.Field>
         </Form>
       </Layout>
