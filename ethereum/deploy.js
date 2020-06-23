@@ -3,8 +3,7 @@ const Web3  = require('web3');
 const compiledContract = require('./build/ContractDeployer.json');
 const compiledMyProfile = require('./build/DeployMyProfile.json');
 const provider = new HDWalletProvider(
-  'enlist seven lava rough burger maze trumpet series cream equip top state',
-  'https://rinkeby.infura.io/v3/9bf8842ccc2c40ad8686e700e0233caf'
+  //add your metamask mnemonic
 );
 const web3 = new Web3(provider);
 const deploy = async ()=>{
